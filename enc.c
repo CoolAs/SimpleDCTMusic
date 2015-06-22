@@ -71,13 +71,13 @@ int main()
   //Convert the DCT to ints
   for (int i = 0; i < WINDOW_SIZE; ++i)
   {
-    iout[i*2] = doutl[i]*128;
-    iout[i*2+1] = doutr[i]*128;
+    iout[i*2] = doutl[i]*8;
+    iout[i*2+1] = doutr[i]*8;
   }  
   //Now print the array
-  for (int i = 0; i < WINDOW_SIZE*2;++i)
+  for (int i = 0; i < WINDOW_SIZE;++i)
   {
-    putchar(iout[i]&0xFF);
+    putchar((iout[i*2]&0xF) | ((iout[i*2+1]&0xF)*16));
   }
  }
 }

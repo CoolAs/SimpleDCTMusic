@@ -38,14 +38,13 @@ int main()
   for (int i = 0; i<WINDOW_SIZE;++i)
   {
     signed char c = getchar();
-    iarr[i]=c;
-    c = getchar();
-    iarr[i+WINDOW_SIZE]=c;
+    iarr[i]=c&0x0F;
+    iarr[i+WINDOW_SIZE]=(c&0xF0)/16;
   }
   //Convert the ints to doubles
   for (int i = 0; i < WINDOW_SIZE*2;++i)
   {
-    darr[i] = ((double)iarr[i])/128.;
+    darr[i] = ((double)iarr[i])/8.;
   }
   //Get the DCT
   idct(WINDOW_SIZE,darr,doutl);
