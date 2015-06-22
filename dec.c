@@ -22,11 +22,21 @@ void idct(int N, const double X[], double x[]) {
     x[n] = sum * sqrt(2. / N);
   }
 }
-
-
+int num;
+char lc;
+char RLE_getchar()
+{
+  if (num == 0)
+  {
+    num = (unsigned char)getchar();
+    lc = getchar();
+  }
+  --num;
+  return lc;
+}
 int main()
 {
-
+ num = 0;
  int iarr[WINDOW_SIZE*2];
  double darr[WINDOW_SIZE*2];
  double doutl[WINDOW_SIZE];
@@ -37,9 +47,9 @@ int main()
   //Load the window
   for (int i = 0; i<WINDOW_SIZE;++i)
   {
-    signed char c = getchar();
+    signed char c = RLE_getchar();
     iarr[i]=c;
-    c = getchar();
+    c = RLE_getchar();
     iarr[i+WINDOW_SIZE]=c;
   }
   //Convert the ints to doubles

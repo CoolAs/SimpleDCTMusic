@@ -22,10 +22,37 @@ void idct(int N, const double X[], double x[]) {
     x[n] = sum * sqrt(2. / N);
   }
 }
+int lc;
+int num;
+void RLE_putchar(char c)
+{
+  if (num == -1)
+  {
+   lc = c;
+   num = 1;
+  }
+  else if (lc == c)
+  {
+    if (num < 255) ++num;
+    else
+    {
+      putchar(num);
+      putchar(lc);
+      num = 1;
+    }   
+  }
+  else{
+    putchar(num);
+    putchar(lc);
+    lc = c;
+    num = 1;
+  }
 
+}
 
 int main()
 {
+ num = -1;
  unsigned char buf[WINDOW_SIZE*4];
  int iarr[WINDOW_SIZE*2];
  double darr[WINDOW_SIZE*2];
@@ -77,7 +104,7 @@ int main()
   //Now print the array
   for (int i = 0; i < WINDOW_SIZE*2;++i)
   {
-    putchar(iout[i]&0xFF);
+    RLE_putchar(iout[i]&0xFF);
   }
  }
 }
