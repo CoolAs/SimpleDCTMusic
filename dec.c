@@ -38,8 +38,9 @@ int main()
   for (int i = 0; i<WINDOW_SIZE;++i)
   {
     signed char c = getchar();
-    iarr[i]=c&0x0F;
-    iarr[i+WINDOW_SIZE]=(c&0xF0)/16;
+    iarr[i]=c;
+    c = getchar();
+    iarr[i+WINDOW_SIZE]=c;
   }
   //Convert the ints to doubles
   for (int i = 0; i < WINDOW_SIZE*2;++i)

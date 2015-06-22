@@ -75,9 +75,9 @@ int main()
     iout[i*2+1] = doutr[i]*8;
   }  
   //Now print the array
-  for (int i = 0; i < WINDOW_SIZE;++i)
+  for (int i = 0; i < WINDOW_SIZE*2;++i)
   {
-    putchar((iout[i*2]&0xF) | ((iout[i*2+1]&0xF)*16));
+    putchar(iout[i]&0xFF);
   }
  }
 }
