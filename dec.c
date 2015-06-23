@@ -1,27 +1,7 @@
 #include <stdio.h>
 #include <math.h>
-#define WINDOW_SIZE 256
-void dct_ii(int N, const double x[], double X[]) {
-  for (int k = 0; k < N; ++k) {
-    double sum = 0.;
-    double s = (k == 0) ? sqrt(.5) : 1.;
-    for (int n = 0; n < N; ++n) {
-      sum += s * x[n] * cos(M_PI * (n + .5) * k / N);
-    }
-    X[k] = sum * sqrt(2. / N);
-  }
-}
+#define WINDOW_SIZE 32
 
-void idct(int N, const double X[], double x[]) {
-  for (int n = 0; n < N; ++n) {
-    double sum = 0.;
-    for (int k = 0; k < N; ++k) {
-      double s = (k == 0) ? sqrt(.5) : 1.;
-      sum += s * X[k] * cos(M_PI * (n + .5) * k / N);
-    }
-    x[n] = sum * sqrt(2. / N);
-  }
-}
 int num;
 char lc;
 char RLE_getchar()
@@ -38,32 +18,36 @@ int main()
 {
  num = 0;
  int iarr[WINDOW_SIZE*2];
- double darr[WINDOW_SIZE*2];
- double doutl[WINDOW_SIZE];
- double doutr[WINDOW_SIZE];
+ float darr[WINDOW_SIZE*2];
+ float doutl[WINDOW_SIZE];
+ float doutr[WINDOW_SIZE];
  int iout[WINDOW_SIZE*4];
  unsigned char buf[WINDOW_SIZE*4];
  while (!feof(stdin)){
   //Load the window
   for (int i = 0; i<WINDOW_SIZE;++i)
   {
-    signed char c = RLE_getchar();
+    signed char c = getchar();
     iarr[i]=c;
-    c = RLE_getchar();
+    c = getchar();
     iarr[i+WINDOW_SIZE]=c;
   }
-  //Convert the ints to doubles
+  //Convert the ints to floats
   for (int i = 0; i < WINDOW_SIZE*2;++i)
   {
-    darr[i] = ((double)iarr[i])/8.;
+    darr[i] = ((float)iarr[i])/16.;
   }
   //Get the DCT
   idct(WINDOW_SIZE,darr,doutl);
-  double* darrr = darr + WINDOW_SIZE;
+  float* darrr = darr + WINDOW_SIZE;
   idct(WINDOW_SIZE,darrr,doutr);
   //Convert the DCT to ints
   for (int i = 0; i < WINDOW_SIZE; ++i)
   {
+    if (doutl[i]<-1) doutl[i]=-1;
+    else if (doutl[i]>0.99999) doutl[i]=0.99999;
+    if (doutr[i]<-1) doutr[i]=-1;
+    else if (doutr[i]>0.99999) doutr[i]=0.99999;
     iout[i*2] = doutl[i]*32768;
     iout[i*2+1] = doutr[i]*32768;
   }  
