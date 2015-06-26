@@ -1,18 +1,23 @@
 #include <stdio.h>
 #include <math.h>
-#define WINDOW_SIZE 32
+#define WINDOW_SIZE 64
 
 int num;
-char lc;
-char RLE_getchar()
+char control;
+char Z_getchar()
 {
   if (num == 0)
   {
-    num = (unsigned char)getchar();
-    lc = getchar();
+    control = getchar();
+    num = 8;
   }
   --num;
-  return lc;
+  int mask = 1 << num;
+  if (control&mask)
+  {
+    return getchar();
+  }
+  else return 0;
 }
 int main()
 {
@@ -27,9 +32,9 @@ int main()
   //Load the window
   for (int i = 0; i<WINDOW_SIZE;++i)
   {
-    signed char c = getchar();
+    signed char c = Z_getchar();
     iarr[i]=c;
-    c = getchar();
+    c = Z_getchar();
     iarr[i+WINDOW_SIZE]=c;
   }
   //Convert the ints to floats

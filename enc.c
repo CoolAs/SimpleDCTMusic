@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#define WINDOW_SIZE 32
+#define WINDOW_SIZE 64
 
 int lc;
 int num;
@@ -82,9 +82,24 @@ int main()
     iout[i*2+1] = doutr[i]*16;
   }  
   //Now print the array
-  for (int i = 0; i < WINDOW_SIZE*2;++i)
+  for (int i = 0; i < WINDOW_SIZE*2;i+=8)
   {
-    putchar(iout[i]&0xFF);
+    char control = 0;
+    if (iout[i]&0xFF) control|=128;
+    if (iout[i+1]&0xFF) control|=64;
+    if (iout[i+2]&0xFF) control|=32;
+    if (iout[i+3]&0xFF) control|=16;
+    if (iout[i+4]&0xFF) control|=8;
+    if (iout[i+5]&0xFF) control|=4;
+    if (iout[i+6]&0xFF) control|=2;
+    if (iout[i+7]&0xFF) control|=1;
+
+
+    putchar(control);
+    for (int j = 0; j < 8; ++j)
+    {
+      if (iout[i+j]&0xFF) putchar(iout[i+j]&0xFF);
+    }
   }
  }
 }
