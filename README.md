@@ -4,8 +4,7 @@ Music should be 16bit integer little endian, signed stereo audio
 
 ### Compiling
 ```
-g++ -o encode enc.c
-g++ -o decode dec.c
+g++ -o SimpleDCT SimpleDCT.c
 ```
 
 ### Usage
@@ -13,11 +12,11 @@ Where `input.whatever` is your audio file:
 
  ```bash
  ffmpeg -i input.whatever -f s16le -acodec pcm_s16le input.raw
- cat input.raw | ./encode > compressed.raw
+ ./SimpleDCT e input.raw compressed.raw
  # Here you can use the compressed audio, "compressed.raw"
  
  # To decompress it into "processed.wav":
- cat compressed.raw | ./decode > decompressed.raw
+ ./SimpleDCT d compressed.raw decompressed.raw
  ffmpeg -f u16le -ar 22050 -ac 2 -i decompressed.raw processed.wav
 
  ```
